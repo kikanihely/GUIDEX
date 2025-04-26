@@ -11,6 +11,7 @@ import SchemePage from "../pages/SchemePage";
 import Navbar from "../components/Navbar";
 import LoginPage from "../pages/LoginPage";
 import ProfilePage from "../pages/ProfilePAge";
+import AdminFeedback from "../pages/AdminFeedback";
 
 const AppRouter = () => {
   return (
@@ -27,7 +28,7 @@ const AppRouter = () => {
         <Route path="/scheme" element={<SchemePage />} /> 
         <Route path="/profile" element={<ProfilePage />} /> 
         <Route path="/admin/dashboard" element={<Admin />} /> 
-
+        <Route path="/admin/feedback" element={<AdminFeedback />} /> 
       </Routes>
     </Router>
   );

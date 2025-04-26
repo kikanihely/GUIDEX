@@ -1,15 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import login from '../assets/login.png';
-
-// Custom hook for storing token in localStorage
-const useAuth = () => {
-    const storetokenInLS = (token) => {
-        localStorage.setItem("authToken", token);
-    };
-
-    return { storetokenInLS };
-};
+import { useAuth } from "../store/auth";
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
@@ -20,47 +12,64 @@ const LoginPage = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-
+    
         if (!email || !password) {
             alert("Please enter both email and password.");
             return;
         }
-
-        // Static admin check
-        if (email === "admin@guidex.com" && password === "admin123") {
-            localStorage.setItem("role", "admin");
-            storetokenInLS("static-admin-token");
-            alert("Admin login successful!");
-            navigate("/admin/dashboard"); // Change path as needed
-            return;
-        }
-
+    
         try {
+            const loginPayload = {
+                email,
+                emailId: email,
+                password,
+            };
+    
+            if (email === "admin@guidex.com" && password === "admin123") {
+                localStorage.setItem("token", "admin-token");
+                localStorage.setItem("isAdmin", "true"); // Static admin flag
+                localStorage.setItem("role", "admin"); // Store the role
+                navigate("/admin/dashboard");
+                return;
+            }
+    
+            console.log("Payload being sent to server:", loginPayload);
+    
             const response = await fetch("http://localhost:5000/api/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify(loginPayload),
             });
-
+    
+            const data = await response.json();
+            console.log("Response received:", data);
+    
             if (!response.ok) {
-                const errorData = await response.json();
-                alert(errorData.message || "Invalid Credentials");
+                alert(data?.message || "Invalid Credentials. Please try again.");
                 return;
             }
-
-            const data = await response.json();
-            if (data.token) {
-                storetokenInLS(data.token);
-                alert("Login successful!");
-                navigate("/"); // Redirect after successful login
-            } else {
-                alert("Unexpected error occurred. Please try again.");
+    
+            storetokenInLS(data.token);
+            localStorage.setItem("token", data.token);
+    
+            if (data.user && data.user._id) {
+                localStorage.setItem("userId", data.user._id);
+                localStorage.setItem("role", data.user.role); // Assuming the role is returned in the response
             }
+    
+            alert("Login successful!");
+    
+            if (data.token) {
+                navigate("/");
+            }
+    
         } catch (error) {
             console.error("Error during login:", error);
             alert("An error occurred. Please try again later.");
         }
     };
+    
+
 
     return (
         <div className="flex h-screen">

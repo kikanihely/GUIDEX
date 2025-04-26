@@ -6,9 +6,18 @@ const FeedbackForm = () => {
   const [mostUsedFeature, setMostUsedFeature] = useState("");
   const [improvement, setImprovement] = useState("");
   const [followUp, setFollowUp] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("Please login to submit feedback.");
+      return;
+    }
+
     const feedback = {
       usageFrequency,
       motivation,
@@ -16,8 +25,37 @@ const FeedbackForm = () => {
       improvement,
       followUp,
     };
-    console.log("Feedback Submitted:", feedback);
-    alert("Thank you for your feedback!");
+
+    try {
+      setLoading(true);
+
+      const response = await fetch("http://localhost:5000/api/auth/feedback", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(feedback),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to submit feedback");
+      }
+
+      alert("Thank you for your feedback!");
+      setUsageFrequency("");
+      setMotivation("");
+      setMostUsedFeature("");
+      setImprovement("");
+      setFollowUp(false);
+    } catch (error) {
+      console.error("Feedback submission error:", error);
+      alert("Failed to submit feedback. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -28,9 +66,7 @@ const FeedbackForm = () => {
         </h2>
         <hr className="mb-4" />
 
-        {/* Form Fields */}
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Usage Frequency */}
           <div>
             <label
               htmlFor="usage-frequency"
@@ -45,10 +81,10 @@ const FeedbackForm = () => {
               placeholder="Everyday / Once a week / Bi-weekly"
               value={usageFrequency}
               onChange={(e) => setUsageFrequency(e.target.value)}
+              required
             />
           </div>
 
-          {/* Motivation */}
           <div>
             <label
               htmlFor="motivation"
@@ -62,10 +98,10 @@ const FeedbackForm = () => {
               placeholder="What problem does it solve for you?"
               value={motivation}
               onChange={(e) => setMotivation(e.target.value)}
+              required
             ></textarea>
           </div>
 
-          {/* Most Used Feature */}
           <div>
             <label
               htmlFor="most-used-feature"
@@ -79,10 +115,10 @@ const FeedbackForm = () => {
               className="w-full mt-1 p-2 border border-gray-300 rounded-md"
               value={mostUsedFeature}
               onChange={(e) => setMostUsedFeature(e.target.value)}
+              required
             />
           </div>
 
-          {/* Improvement */}
           <div>
             <label
               htmlFor="improvement"
@@ -96,28 +132,10 @@ const FeedbackForm = () => {
               placeholder="Let us know your thoughts"
               value={improvement}
               onChange={(e) => setImprovement(e.target.value)}
+              required
             ></textarea>
           </div>
 
-          {/* Satisfaction Rating */}
-          <div>
-            <label className="block font-semibold text-gray-700">
-              How satisfied are you with our service/product?
-            </label>
-            <div className="flex items-center justify-between text-3xl mt-2">
-              <span title="Very Unsatisfied" className="cursor-pointer">😡</span>
-              <span title="Unsatisfied" className="cursor-pointer">😟</span>
-              <span title="Neutral" className="cursor-pointer">😐</span>
-              <span title="Satisfied" className="cursor-pointer">😊</span>
-              <span title="Very Satisfied" className="cursor-pointer">😍</span>
-            </div>
-            <div className="flex justify-between text-sm text-gray-500 mt-1">
-              <span>Very Unsatisfied</span>
-              <span>Very Satisfied</span>
-            </div>
-          </div>
-
-          {/* Follow-Up Checkbox */}
           <div className="mt-4">
             <input
               type="checkbox"
@@ -131,12 +149,12 @@ const FeedbackForm = () => {
             </label>
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             className="w-full bg-customBlue text-white py-3 rounded-md hover:bg-blue-900 transition"
+            disabled={loading}
           >
-            Submit Feedback
+            {loading ? "Submitting..." : "Submit Feedback"}
           </button>
         </form>
       </div>
