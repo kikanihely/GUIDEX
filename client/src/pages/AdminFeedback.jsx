@@ -11,7 +11,7 @@ const AdminFeedback = () => {
         // Fetch all feedbacks
         const fetchFeedbacks = async () => {
             try {
-                const response = await fetch("http://localhost:5000/api/auth/admin/feedback", {
+                const response = await fetch("http://localhost:5000/api/admin/feedback", {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
@@ -39,7 +39,7 @@ const AdminFeedback = () => {
     return (
         <>
             <Navbar />
-            <div className="min-h-[34.3rem] bg-gray-50 flex justify-center items-start px-4 pt-40 pb-0">
+            <div className="h-fit bg-gray-50 flex justify-center items-start px-4 pt-40 pb-40">
                 <div className="bg-white p-6 md:p-8 rounded-lg shadow-xl w-full max-w-6xl">
                     <h2 className="text-3xl font-bold text-customBlue mb-6 text-center">
                         Admin Dashboard - Feedbacks
@@ -78,7 +78,7 @@ const AdminFeedback = () => {
                                             key={feedback._id}
                                             className="border-b hover:bg-gray-50 transition-all"
                                         >
-                                            <td className="py-4 px-6 text-sm text-gray-800">{feedback.userId.fullName}</td>
+                                            <td className="py-4 px-6 text-sm text-gray-800">{feedback.userId.firstName}</td>
                                             <td className="py-4 px-6 text-sm text-gray-800">{feedback.usageFrequency}</td>
                                             <td className="py-4 px-6 text-sm text-gray-800">{feedback.motivation}</td>
                                             <td className="py-4 px-6 text-sm text-gray-800">{feedback.mostUsedFeature}</td>

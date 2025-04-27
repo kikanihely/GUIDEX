@@ -2,6 +2,7 @@ const User = require("../models/user-model");
 const jwt = require("jsonwebtoken")
 const Feedback = require("../models/feedback-model");
 const mongoose = require("mongoose");
+const Scheme = require("../models/scheme-model");
 
 const home = async (req, res) => {
   try {
@@ -127,7 +128,7 @@ const submitFeedback = async (req, res) => {
 const getAllFeedbacks = async (req, res) => {
   try {
     const feedbacks = await Feedback.find()
-      .populate("userId", "fullName email") // Optionally populate user data
+      .populate("userId", "firstName email") // Optionally populate user data
       .exec();
 
     res.status(200).json({
@@ -140,4 +141,15 @@ const getAllFeedbacks = async (req, res) => {
   }
 };
 
-module.exports = { home, register, login, submitFeedback, getAllFeedbacks };
+const addScheme = async (req, res) => {
+  try {
+    const newScheme = new Scheme(req.body);
+    await newScheme.save();
+    res.status(201).json({ message: "Scheme created successfully!" });
+  } catch (error) {
+    console.error("Error creating scheme:", error);
+    res.status(500).json({ message: "Server Error", error });
+  }
+};
+
+module.exports = { home, register, login, submitFeedback, getAllFeedbacks, addScheme };

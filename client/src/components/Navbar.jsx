@@ -68,7 +68,7 @@ const Navbar = () => {
         {isAdmin ? (
           <>
             <Link to="/admin/dashboard" className="block py-2 px-4 hover:text-customYellow transition duration-200">Dashboard</Link>
-            <Link to="/admin/users" className="block py-2 px-4 hover:text-customYellow transition duration-200">Add Schemes</Link>
+            <Link to="/add-scheme" className="block py-2 px-4 hover:text-customYellow transition duration-200">Add Schemes</Link>
             <Link to="/admin/feedback" className="block py-2 px-4 hover:text-customYellow transition duration-200">Manage Feedbacks</Link>
           </>
         ) : (
