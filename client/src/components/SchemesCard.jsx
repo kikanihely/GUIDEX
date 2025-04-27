@@ -1,13 +1,14 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const SchemesCard = ({ title, description, date }) => {
     const [bookmarked, setBookmarked] = useState(false);
     const navigate = useNavigate();
+    
     const goToSchemePage = () => {
-        navigate('/scheme')
-    }
+        navigate('/scheme');
+    };
+
     return (
         <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-sm">
             {/* Title and Bookmark */}
@@ -20,7 +21,7 @@ const SchemesCard = ({ title, description, date }) => {
                     {bookmarked ? (
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            fill="currentColor" // Filled icon for bookmarked state
+                            fill="currentColor"
                             viewBox="0 0 24 24"
                             strokeWidth={1.5}
                             stroke="currentColor"
@@ -35,7 +36,7 @@ const SchemesCard = ({ title, description, date }) => {
                     ) : (
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            fill="none" // Outline icon for unbookmarked state
+                            fill="none"
                             viewBox="0 0 24 24"
                             strokeWidth={1.5}
                             stroke="currentColor"
@@ -52,14 +53,27 @@ const SchemesCard = ({ title, description, date }) => {
             </div>
 
             {/* Description */}
-            <p className="text-gray-700 mt-4">{description}</p>
+            <p
+                className="text-gray-700 mt-4"
+                style={{
+                    display: "-webkit-box",
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                    WebkitLineClamp: 4, // <- Show only 4 lines
+                }}
+            >
+                {description}
+            </p>
 
             {/* Footer */}
             <div className="mt-6 flex justify-between items-center">
                 <p className="text-sm text-gray-500">
                     Last updated on: <span className="font-medium">{date}</span>
                 </p>
-                <button className="bg-customBlue text-white p-2 rounded-full hover:bg-customYellow hover:text-customBlue" onClick={goToSchemePage}>
+                <button
+                    className="bg-customBlue text-white p-2 rounded-full hover:bg-customYellow hover:text-customBlue"
+                    onClick={goToSchemePage}
+                >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"

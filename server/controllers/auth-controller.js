@@ -89,6 +89,47 @@ const login = async (req, res) => {
   }
 };
 
+const getProfile = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    // Find user by ID, exclude password field
+    const user = await User.findById(userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user); // send user profile
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+const updateProfile = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const updatedData = req.body;
+
+    const user = await User.findByIdAndUpdate(userId, updatedData, {
+      new: true,
+      runValidators: true,
+      select: "-password", // Don't return password
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: "Profile updated successfully", user });
+  } catch (error) {
+    console.error("Profile update error:", error);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+
+
 const submitFeedback = async (req, res) => {
   try {
     console.log("User from token:", req.user); 
@@ -152,4 +193,63 @@ const addScheme = async (req, res) => {
   }
 };
 
-module.exports = { home, register, login, submitFeedback, getAllFeedbacks, addScheme };
+const getAllSchemes = async (req, res) => {
+  try {
+    const schemes = await Scheme.find();
+    res.status(200).json({ schemes });
+  } catch (error) {
+    console.error("Error fetching schemes:", error);
+    res.status(500).json({ message: "Failed to fetch schemes", error: error.message });
+  }
+};
+
+const deleteScheme = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Scheme.findByIdAndDelete(id);
+    res.status(200).json({ message: "Scheme deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting scheme:", error);
+    res.status(500).json({ message: "Server Error", error });
+  }
+};
+
+const getSingleScheme = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const scheme = await Scheme.findById(id);
+
+    if (!scheme) {
+      return res.status(404).json({ message: "Scheme not found" });
+    }
+
+    res.status(200).json({ scheme });
+  } catch (error) {
+    console.error("Error fetching scheme:", error);
+    res.status(500).json({ message: "Server Error", error });
+  }
+};
+
+const updateScheme = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedScheme = await Scheme.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updatedScheme) {
+      return res.status(404).json({ message: "Scheme not found" });
+    }
+
+    res.status(200).json({ message: "Scheme updated successfully" });
+  } catch (error) {
+    console.error("Error updating scheme:", error);
+    res.status(500).json({ message: "Server Error", error });
+  }
+};
+
+
+
+
+module.exports = { home, register, login, submitFeedback, getAllFeedbacks, addScheme, getAllSchemes, deleteScheme, updateScheme, getSingleScheme, getProfile, updateProfile };

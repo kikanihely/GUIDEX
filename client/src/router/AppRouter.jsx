@@ -12,6 +12,8 @@ import Navbar from "../components/Navbar";
 import LoginPage from "../pages/LoginPage";
 import ProfilePage from "../pages/ProfilePAge";
 import AdminFeedback from "../pages/AdminFeedback";
+import EditScheme from "../pages/EditScheme";
+
 
 const AppRouter = () => {
   return (
@@ -29,6 +31,8 @@ const AppRouter = () => {
         <Route path="/profile" element={<ProfilePage />} /> 
         <Route path="/admin/dashboard" element={<Admin />} /> 
         <Route path="/admin/feedback" element={<AdminFeedback />} /> 
+        <Route path="/admin/edit-scheme/:id" element={<EditScheme />} />
+
       </Routes>
     </Router>
   );
