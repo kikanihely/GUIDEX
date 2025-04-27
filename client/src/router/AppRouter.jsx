@@ -27,7 +27,7 @@ const AppRouter = () => {
         <Route path="/admin" element={<Admin />} /> 
         <Route path="/add-scheme" element={<AddScheme1 />} /> 
         <Route path="/add-scheme-2" element={<AddScheme2 />} /> 
-        <Route path="/scheme" element={<SchemePage />} /> 
+        <Route path="/about-scheme/:schemeId" element={<SchemePage />} /> 
         <Route path="/profile" element={<ProfilePage />} /> 
         <Route path="/admin/dashboard" element={<Admin />} /> 
         <Route path="/admin/feedback" element={<AdminFeedback />} /> 

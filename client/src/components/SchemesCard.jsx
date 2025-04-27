@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const SchemesCard = ({ title, description, date }) => {
+const SchemesCard = ({ title, description, date, schemeId }) => {
     const [bookmarked, setBookmarked] = useState(false);
     const navigate = useNavigate();
     
     const goToSchemePage = () => {
-        navigate('/scheme');
+        navigate(`/about-scheme/${schemeId}`);
     };
 
     return (

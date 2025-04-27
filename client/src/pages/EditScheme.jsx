@@ -115,9 +115,19 @@ const EditScheme = () => {
                                 <option value="">Select Scheme Category</option>
                                 <option value="Education">Education</option>
                                 <option value="Health">Health</option>
+                                <option value="Employment">Employment</option>
+                                <option value="Housing">Housing</option>
+                                <option value="Agriculture">Agriculture</option>
+                                <option value="Business">Business</option>
+                                <option value="Women Empowerment">Women Empowerment</option>
+                                <option value="Child Welfare">Child Welfare</option>
+                                <option value="Senior Citizen Welfare">Senior Citizen Welfare</option>
+                                <option value="Skill Development">Skill Development</option>
                                 <option value="Social Welfare">Social Welfare</option>
-                                <option value="Subsidy">Subsidy</option>
-                                <option value="Loan">Loan</option>
+                                <option value="Financial Assistance">Financial Assistance</option>
+                                <option value="Sports">Sports</option>
+                                <option value="Environment">Environment</option>
+                                <option value="Other">Other</option>
                             </select>
                         </div>
 
@@ -141,10 +151,9 @@ const EditScheme = () => {
                                 className="border rounded w-full p-2"
                             >
                                 <option value="">Select Category</option>
-                                <option value="General">General</option>
-                                <option value="SC">Scheduled Caste</option>
-                                <option value="ST">Scheduled Tribe</option>
-                                <option value="OBC">Other Backward Classes</option>
+                                <option value="Open">Open</option>
+                                <option value="Reserved">Reserved</option>
+                                <option value="Both">Both</option>
                             </select>
                         </div>
 
@@ -160,7 +169,8 @@ const EditScheme = () => {
                                 <option value="">Select Gender</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
-                                <option value="Other">Other</option>
+                                <option value="Transgender">Transgender</option>
+                                <option value="All">All</option>
                             </select>
                         </div>
 
@@ -173,30 +183,27 @@ const EditScheme = () => {
                                 onChange={handleChange}
                                 className="border rounded w-full p-2"
                             >
-                                <option value="">Select Max Family Income</option>
-                                <option value="Below 1 Lakh">Below ₹1 Lakh</option>
-                                <option value="1 Lakh to 3 Lakhs">₹1 Lakh to ₹3 Lakhs</option>
-                                <option value="3 Lakhs to 5 Lakhs">₹3 Lakhs to ₹5 Lakhs</option>
-                                <option value="5 Lakhs to 10 Lakhs">₹5 Lakhs to ₹10 Lakhs</option>
-                                <option value="Above 10 Lakhs">Above ₹10 Lakhs</option>
+                                <option value="">Select Income</option>
+                                <option value="Up To 1 lakh">Up to 100,000</option>
+                                <option value="Up To 5 lakh">Up to 500,000</option>
+                                <option value="Up To 10 lakh">Up to 1,000,000</option>
+                                <option value="Above 10 lakh">Above 1,000,000</option>
+                                <option value="No limit">All</option>
                             </select>
                         </div>
 
                         {/* Dropdown for Max Class */}
                         <div>
-                            <label>Max Class:</label>
-                            <select
+                            <label htmlFor="maxClass" className="block text-sm font-semibold">Maximum Class</label>
+                            <input
+                                type="text"
+                                id="maxClass"
                                 name="maxClass"
                                 value={formData.maxClass}
                                 onChange={handleChange}
-                                className="border rounded w-full p-2"
-                            >
-                                <option value="">Select Max Class</option>
-                                <option value="Class 1">Class 1</option>
-                                <option value="Class 2">Class 2</option>
-                                <option value="Class 3">Class 3</option>
-                                <option value="Class 4">Class 4</option>
-                            </select>
+                                placeholder="Enter Max Class"
+                                className="mt-1 border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 text-gray-800"
+                            />
                         </div>
 
                         {/* Dropdown for Max Age */}
@@ -220,12 +227,14 @@ const EditScheme = () => {
                                 onChange={handleChange}
                                 className="border rounded w-full p-2"
                             >
-                                <option value="">Select Caste Category</option>
+                                <option value="">Select Caste</option>
                                 <option value="General">General</option>
-                                <option value="SC">Scheduled Caste (SC)</option>
-                                <option value="ST">Scheduled Tribe (ST)</option>
-                                <option value="OBC">Other Backward Classes (OBC)</option>
-                                <option value="EWS">Economically Weaker Sections (EWS)</option>
+                                <option value="OBC">OBC</option>
+                                <option value="SC">SC</option>
+                                <option value="ST">ST</option>
+                                <option value="Other">Other</option>
+                                <option value="All">All</option>
+                                <option value="SC / ST / OBC">SC / ST / OBC</option>
                             </select>
                         </div>
 
@@ -244,14 +253,53 @@ const EditScheme = () => {
 
                         {/* Dropdown for State */}
                         <div>
-                            <label>State:</label>
-                            <input
-                                type="text"
+                            <label htmlFor="state" className="block text-sm font-semibold">State</label>
+                            <select
+                                id="state"
                                 name="state"
                                 value={formData.state}
                                 onChange={handleChange}
-                                className="border rounded w-full p-2"
-                            />
+                                className="mt-1 border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 text-gray-800"
+                            >
+                                <option value="">Select State</option>
+                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                <option value="Assam">Assam</option>
+                                <option value="Bihar">Bihar</option>
+                                <option value="Chhattisgarh">Chhattisgarh</option>
+                                <option value="Goa">Goa</option>
+                                <option value="Gujarat">Gujarat</option>
+                                <option value="Haryana">Haryana</option>
+                                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                <option value="Jharkhand">Jharkhand</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Kerala">Kerala</option>
+                                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option value="Manipur">Manipur</option>
+                                <option value="Meghalaya">Meghalaya</option>
+                                <option value="Mizoram">Mizoram</option>
+                                <option value="Nagaland">Nagaland</option>
+                                <option value="Odisha">Odisha</option>
+                                <option value="Punjab">Punjab</option>
+                                <option value="Rajasthan">Rajasthan</option>
+                                <option value="Sikkim">Sikkim</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <option value="Telangana">Telangana</option>
+                                <option value="Tripura">Tripura</option>
+                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                <option value="Uttarakhand">Uttarakhand</option>
+                                <option value="West Bengal">West Bengal</option>
+                                <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                                <option value="Chandigarh">Chandigarh</option>
+                                <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                                <option value="Delhi">Delhi</option>
+                                <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                <option value="Ladakh">Ladakh</option>
+                                <option value="Lakshadweep">Lakshadweep</option>
+                                <option value="Puducherry">Puducherry</option>
+                                <option value="All">All</option>
+                            </select>
                         </div>
 
                         {/* Dropdown for Disability Status */}
@@ -264,8 +312,8 @@ const EditScheme = () => {
                                 className="border rounded w-full p-2"
                             >
                                 <option value="">Select Disability Status</option>
-                                <option value="None">None</option>
-                                <option value="Disabled">Disabled</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
                             </select>
                         </div>
 
@@ -294,37 +342,41 @@ const EditScheme = () => {
                                 className="border rounded w-full p-2"
                             >
                                 <option value="">Select Marital Status</option>
-                                <option value="Married">Married</option>
                                 <option value="Single">Single</option>
+                                <option value="Married">Married</option>
                                 <option value="Divorced">Divorced</option>
+                                <option value="Widowed">Widowed</option>
+                                <option value="All">All</option>
                             </select>
                         </div>
 
                         {/* Dropdown for Occupation */}
                         <div>
-                            <label>Occupation:</label>
-                            <select
+                            <label htmlFor="occupation" className="block text-sm font-semibold">Occupation (Candidate/Parent)</label>
+                            <input
+                                type="text"
+                                id="occupation"
                                 name="occupation"
                                 value={formData.occupation}
                                 onChange={handleChange}
-                                className="border rounded w-full p-2"
-                            >
-                                <option value="">Select Occupation</option>
-                                <option value="Employed">Employed</option>
-                                <option value="Self-Employed">Self-Employed</option>
-                                <option value="Unemployed">Unemployed</option>
-                            </select>
+                                placeholder="Occupation"
+                                className="mt-1 border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 text-gray-800"
+                            />
                         </div>
 
                         <div>
-                            <label>Already Availed:</label>
-                            <input
-                                type="text"
+                            <label htmlFor="alreadyAvailed" className="block text-sm font-semibold">Already Availed another Scholarship?</label>
+                            <select
+                                id="alreadyAvailed"
                                 name="alreadyAvailed"
-                                value={formData.alreadyAvailed}
                                 onChange={handleChange}
-                                className="border rounded w-full p-2"
-                            />
+                                value={formData.alreadyAvailed}
+                                className="mt-1 border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 text-gray-800"
+                            >
+                                <option value="">Select Option</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
                         </div>
 
                         <div>

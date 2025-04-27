@@ -251,5 +251,4 @@ const updateScheme = async (req, res) => {
 
 
 
-
 module.exports = { home, register, login, submitFeedback, getAllFeedbacks, addScheme, getAllSchemes, deleteScheme, updateScheme, getSingleScheme, getProfile, updateProfile };

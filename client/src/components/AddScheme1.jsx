@@ -186,11 +186,11 @@ const AddScheme = () => {
                     className="mt-1 border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 text-gray-800"
                   >
                     <option value="">Select Income</option>
-                    <option value="UpTo100000">Up to 100,000</option>
-                    <option value="UpTo500000">Up to 500,000</option>
-                    <option value="UpTo1000000">Up to 1,000,000</option>
-                    <option value="Above1000000">Above 1,000,000</option>
-                    <option value="All">All</option>
+                    <option value="Up To 1 lakh">Up to 100,000</option>
+                    <option value="Up To 5 lakh">Up to 500,000</option>
+                    <option value="Up To 10 lakh">Up to 1,000,000</option>
+                    <option value="Above 10 lakh">Above 1,000,000</option>
+                    <option value="No limit">All</option>
                   </select>
                 </div>
 
