@@ -13,7 +13,13 @@ const Profile = () => {
     state: "",
     degree: "",
     course: "",
+    disabilityStatus: "",
+    minorityStatus: "",
+    maritalStatus: "",
+    occupation: "",
+    alreadyAvailed: "",
   });
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -80,7 +86,7 @@ const Profile = () => {
   return (
     <div className="min-h-screen  flex items-center justify-center p-6 pt-[100px]">
       <div className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl p-10">
-        
+
         {/* Top section */}
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -91,7 +97,7 @@ const Profile = () => {
 
         {/* Form */}
         <form id="edit-profile-form" onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          
+
           {/* Inputs */}
           <FormField label="First Name" name="firstName" value={user.firstName} onChange={handleChange} />
           <FormField label="Last Name" name="lastName" value={user.lastName} onChange={handleChange} />
@@ -103,7 +109,7 @@ const Profile = () => {
             onChange={handleChange}
             options={["Male", "Female", "Other"]}
           />
-          <FormField label="Birth Date" name="birthDate" type="date" value={user.birthDate?.slice(0,10)} onChange={handleChange} />
+          <FormField label="Birth Date" name="birthDate" type="date" value={user.birthDate?.slice(0, 10)} onChange={handleChange} />
           <DropdownField
             label="Category"
             name="category"
@@ -115,6 +121,45 @@ const Profile = () => {
           <FormField label="State" name="state" value={user.state} onChange={handleChange} />
           <FormField label="Degree" name="degree" value={user.degree} onChange={handleChange} />
           <FormField label="Course" name="course" value={user.course} onChange={handleChange} />
+          <DropdownField
+            label="Disability Status"
+            name="disabilityStatus"
+            value={user.disabilityStatus}
+            onChange={handleChange}
+            options={["Yes", "No"]}
+          />
+
+          <DropdownField
+            label="Minority Status"
+            name="minorityStatus"
+            value={user.minorityStatus}
+            onChange={handleChange}
+            options={["Yes", "No"]}
+          />
+
+          <DropdownField
+            label="Marital Status"
+            name="maritalStatus"
+            value={user.maritalStatus}
+            onChange={handleChange}
+            options={["Single", "Married", "Divorced", "Widowed"]}
+          />
+
+          <FormField
+            label="Occupation"
+            name="occupation"
+            value={user.occupation}
+            onChange={handleChange}
+          />
+
+          <DropdownField
+            label="Already Availed Any Government Scheme"
+            name="alreadyAvailed"
+            value={user.alreadyAvailed}
+            onChange={handleChange}
+            options={["Yes", "No"]}
+          />
+
         </form>
 
         {/* Submit button */}

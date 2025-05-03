@@ -16,21 +16,36 @@ const Register = () => {
     birthDate: "",
     email: "",
     category: "General",
-    familyIncome: "b1lkh",
+    familyIncome: "",
     state: "",
     degree: "",
     course: "",
     password: "",
     confirmPassword: "",
+    termsAccepted: false,
+    disabilityStatus: "None",  // Added disability status
+    minorityStatus: "None",    // Added minority status
+    maritalStatus: "Single",   // Added marital status
+    occupation: "",            // Added occupation
+    alreadyAvailed: "No",      // Added already availed option
   });
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // Special case for 'familyIncome' to ensure it is a valid number
+    if (name === "familyIncome" && isNaN(value)) {
+      setError("Family income must be a valid number");
+    } else {
+      setError("");
+    }
+
     setUser((prevUser) => ({
       ...prevUser,
       [name]: value,
     }));
-    console.log(name, value);  // Debugging: check if values are updating
+    console.log(name, value); // Debugging: check if values are updating
   };
 
   const handleReset = () => {
@@ -41,7 +56,7 @@ const Register = () => {
       birthDate: "",
       email: "",
       category: "General",
-      familyIncome: "b1lkh",
+      familyIncome: "",
       state: "",
       degree: "",
       course: "",
@@ -49,8 +64,9 @@ const Register = () => {
       confirmPassword: "",
     });
     setStep(1);
+    setError(""); // Clear any errors on reset
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -61,16 +77,17 @@ const Register = () => {
         },
         body: JSON.stringify(user),
       });
-  
+
+
       // Log the response for debugging
       console.log('Response:', response);
-  
+
       // If the response is not okay (400 or other errors), handle it
       if (!response.ok) {
         // Get the error text, not JSON, since we are getting a 400 error
         const errorResponse = await response.text();
         console.log('Error response:', errorResponse); // Log the raw error text
-  
+
         // Try to parse it as JSON if possible
         try {
           const errorData = JSON.parse(errorResponse);
@@ -78,16 +95,16 @@ const Register = () => {
         } catch (parseError) {
           alert(`Registration failed: ${errorResponse || 'Unknown error'}`);
         }
-  
+
         return;
       }
-  
+
       // If response is okay, parse it as JSON
       const responseData = await response.json();
       console.log('Success response:', responseData);
-  
+
       alert("Registration successful!");
-  
+
       // Reset form fields
       setUser({
         firstName: "",
@@ -103,7 +120,7 @@ const Register = () => {
         password: "",
         confirmPassword: "",
       });
-  
+
       setStep(1);
       navigate("/login");
     } catch (error) {
@@ -111,9 +128,9 @@ const Register = () => {
       alert(`Something went wrong: ${error.message}`);
     }
   };
-  
-  
-  const nextStep = () => step < 4 && setStep(step + 1);
+
+
+  const nextStep = () => step < 5 && setStep(step + 1);
   const prevStep = () => step > 1 && setStep(step - 1);
 
   return (
@@ -132,7 +149,7 @@ const Register = () => {
         <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-blue-300 rounded-full blur-3xl opacity-50"></div>
         <div className="absolute bottom-0 left-0 w-[250px] h-[250px] bg-blue-300 rounded-full blur-3xl opacity-50"></div>
         <h2 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-8">
-          {`Step ${step}: ${["Personal Information", "Contact Details", "Education & Background", "Create Account"][step - 1]}`}
+          {`Step ${step}: ${["Personal Information", "Contact Details", "Education & Background","Set your status", "Create Account"][step - 1]}`}
         </h2>
 
         <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6 bg-white p-8 shadow-lg rounded-lg">
@@ -257,18 +274,18 @@ const Register = () => {
                   onChange={handleChange}
                   className="mt-1 block w-full border border-gray-300 rounded-md p-2"
                 >
-                  <option value="b1lkh">Below 1 lakh</option>
-                  <option value="b3lkh">1 to 3 lakh</option>
-                  <option value="b5lkh">3 to 5 lakh</option>
-                  <option value="b8lkh">5 to 8 lakh</option>
-                  <option value="b10lkh">8 to 10 lakh</option>
-                  <option value="a10lkh">Above 10 lakh</option>
+                  <option value="Below 1 Lakh">Below 1 lakh</option>
+                  <option value="Up to 3 lakh">1 to 3 lakh</option>
+                  <option value="Up to 5 lakh">3 to 5 lakh</option>
+                  <option value="Up to 8 lakh">5 to 8 lakh</option>
+                  <option value="Up tp 10 lakh">8 to 10 lakh</option>
+                  <option value="Above 10 lakh">Above 10 lakh</option>
                 </select>
               </div>
 
               <div className="mb-4">
 
-                <label htmlFor="familyIncome" className="block text-sm font-semibold">Family Income</label>
+                <label htmlFor="state" className="block text-sm font-semibold">State</label>
                 <select
                   id="state"
                   name="state"
@@ -310,109 +327,217 @@ const Register = () => {
                   <option value="DL">Delhi</option>
                   <option value="LD">Lakshadweep</option>
                   <option value="PY">Puducherry</option>
-              </select>
-            </div>
-        </>
+                </select>
+              </div>
+            </>
           )}
 
-        {step === 3 && (
-          <>
-            <div className="mb-4">
-              <label htmlFor="degree" className="block text-sm font-semibold">Present Class / Degree</label>
-              <select
-                id="degree"
-                name="degree"
-                value={user.degree}
-                onChange={handleChange}
-                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
+          {step === 3 && (
+            <>
+              <div className="mb-4">
+                <label htmlFor="degree" className="block text-sm font-semibold">Present Class / Degree</label>
+                <select
+                  id="degree"
+                  name="degree"
+                  value={user.degree}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
+                >
+                  <option value="None">None</option>
+                  <option value="Class 1">Class 1</option>
+                  <option value="Class 2">Class 2</option>
+                  <option value="Class 3">Class 3</option>
+                  <option value="Class 4">Class 4</option>
+                  <option value="Class 5">Class 5</option>
+                  <option value="Class 6">Class 6</option>
+                  <option value="Class 7">Class 7</option>
+                  <option value="Class 8">Class 8</option>
+                  <option value="Class 9">Class 9</option>
+                  <option value="Class 10">Class 10</option>
+                  <option value="Class 11">Class 11</option>
+                  <option value="Class 12">Class 12</option>
+                  <option value="Undergraduate">Undergraduate</option>
+                  <option value="Postgraduate">Postgraduate</option>
+                  <option value="PhD">PhD</option>
+                </select>
+              </div>
+
+              <div className="mb-4">
+                <label htmlFor="course" className="block text-sm font-semibold">Present Course / Stream</label>
+                <select
+                  id="course"
+                  name="course"
+                  value={user.course}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
+                >
+                  <option value="None">None</option>
+                  <option value="Science">Science</option>
+                  <option value="Commerce">Commerce</option>
+                  <option value="Arts">Arts</option>
+                  <option value="Engineering">Engineering</option>
+                  <option value="Medical">Medical</option>
+                  <option value="Law">Law</option>
+                  <option value="Management">Management</option>
+                  <option value="Literature">Literature</option>
+                  <option value="Vocational">Vocational</option>
+                </select>
+              </div>
+            </>
+          )}
+
+          {step === 4 && (
+            <>
+              {/* Disability Status */}
+              <div className="mb-4">
+                <label htmlFor="disabilityStatus" className="block text-sm font-semibold">Disability Status</label>
+                <select
+                  id="disabilityStatus"
+                  name="disabilityStatus"
+                  value={user.disabilityStatus}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
+                >
+                  <option value="No">No</option>
+                  <option value="Yes">Yes</option>
+                </select>
+              </div>
+
+              {/* Minority Status */}
+              <div className="mb-4">
+                <label htmlFor="minorityStatus" className="block text-sm font-semibold">Minority Status</label>
+                <select
+                  id="minorityStatus"
+                  name="minorityStatus"
+                  value={user.minorityStatus}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
+                >
+                  <option value="No">No</option>
+                  <option value="Yes">Yes</option>
+                </select>
+              </div>
+
+              {/* Marital Status */}
+              <div className="mb-4">
+                <label htmlFor="maritalStatus" className="block text-sm font-semibold">Marital Status</label>
+                <select
+                  id="maritalStatus"
+                  name="maritalStatus"
+                  value={user.maritalStatus}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
+                >
+                  <option value="Single">Single</option>
+                  <option value="Married">Married</option>
+                  <option value="Divorced">Divorced</option>
+                  <option value="Widowed">Widowed</option>
+                </select>
+              </div>
+
+              {/* Occupation */}
+              <div className="mb-4">
+                <label htmlFor="occupation" className="block text-sm font-semibold">Occupation</label>
+                <input
+                  type="text"
+                  id="occupation"
+                  name="occupation"
+                  placeholder="Enter your Occupation"
+                  value={user.occupation}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
+                />
+              </div>
+
+              {/* Already Availed */}
+              <div className="mb-4">
+                <label htmlFor="alreadyAvailed" className="block text-sm font-semibold">Already Availed</label>
+                <select
+                  id="alreadyAvailed"
+                  name="alreadyAvailed"
+                  value={user.alreadyAvailed}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
+                >
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+            </>
+          )}
+
+          {/* Password Section */}
+          {step === 5 && (
+            <>
+              <div className="mb-4">
+                <label htmlFor="password" className="block text-sm font-semibold">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={user.password}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-2 border border-gray-300 rounded-md mt-1"
+                  placeholder="Enter your password"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label htmlFor="confirmPassword" className="block text-sm font-semibold">Confirm Password</label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={user.confirmPassword}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-2 border border-gray-300 rounded-md mt-1"
+                  placeholder="Retype your password"
+                />
+              </div>
+            </>
+          )}
+
+          {/* Navigation Buttons */}
+          <div className="flex justify-evenly">
+            {step > 1 && (
+              <button
+                type="button"
+                onClick={prevStep}
+                className="bg-gradient-to-r from-blue-900 to-customBlue text-white font-bold py-3 px-4 rounded-lg hover:scale-105 hover:shadow-xl transition-transform duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300"
               >
-                <option value="General">General</option>
-                <option value="OBC">OBC</option>
-                <option value="PVTG">PVTG</option>
-                <option value="SC">SC</option>
-                <option value="ST">ST</option>
-              </select>
-            </div>
-
-            <div className="mb-4">
-              <label htmlFor="course" className="block text-sm font-semibold">Present Course / Stream</label>
-              <select
-                id="course"
-                name="course"
-                value={user.course}
-                onChange={handleChange}
-                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
+                ← Back
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={handleReset}
+              className="px-4 py-2 border-2 border-gray-500 text-gray-500 bg-white rounded-lg hover:bg-gray-600 hover:text-white"
+            >
+              ⟳ Reset Form
+            </button>
+            {step < 5 ? (
+              <button
+                type="button"
+                onClick={nextStep}
+                className="bg-gradient-to-r from-blue-900 to-customBlue text-white font-bold py-3 px-4 rounded-lg hover:scale-105 hover:shadow-xl transition-transform duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300"
               >
-                <option value="General">General</option>
-                <option value="OBC">OBC</option>
-                <option value="PVTG">PVTG</option>
-                <option value="SC">SC</option>
-                <option value="ST">ST</option>
-              </select>
-            </div>
-          </>
-        )}
+                Next →
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="bg-gradient-to-r from-blue-900 to-customBlue text-white font-bold py-3 px-4 rounded-lg hover:scale-105 hover:shadow-xl transition-transform duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300"
+              >
+                Register
+              </button>
+            )}
+          </div>
 
-        {step === 4 && (
-          <>
-            {/* Password */}
-            <div className="mb-4">
-              <label htmlFor="password" className="block text-sm font-semibold">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={user.password}
-                onChange={handleChange}
-                required
-                className="w-full p-2 border border-gray-300 rounded-md mt-1"
-                placeholder="Enter your password"
-              />
-            </div>
-
-            {/* Confirm Password */}
-            <div className="mb-4">
-              <label htmlFor="confirmPassword" className="block text-sm font-semibold">
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
-                value={user.confirmPassword}
-                onChange={handleChange}
-                required
-                className="w-full p-2 border border-gray-300 rounded-md mt-1"
-                placeholder="Retype your password"
-              />
-            </div>
-          </>
-        )}
-
-        {/* Navigation Buttons */}
-        <div className="flex justify-evenly">
-          {step > 1 && (
-            <button type="button" onClick={prevStep} className="bg-gradient-to-r from-blue-900 to-customBlue text-white font-bold py-3 px-4 rounded-lg hover:scale-105 hover:shadow-xl transition-transform duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300">
-              ← Back
-            </button>
-          )}
-          <button type="button" onClick={handleReset} className="px-4 py-2 border-2 border-gray-500 text-gray-500 bg-white rounded-lg hover:bg-gray-600 hover:text-white">
-            ⟳ Reset Form
-          </button>
-          {step < 4 ? (
-            <button type="button" onClick={nextStep} className="bg-gradient-to-r from-blue-900 to-customBlue text-white font-bold py-3 px-4 rounded-lg hover:scale-105 hover:shadow-xl transition-transform duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300">
-              Next →
-            </button>
-          ) : (
-            <button type="submit" className="bg-gradient-to-r from-blue-900 to-customBlue text-white font-bold py-3 px-4 rounded-lg hover:scale-105 hover:shadow-xl transition-transform duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300">
-              Submit
-            </button>
-          )}
-        </div>
-      </form>
-    </div>
+        </form>
+      </div>
     </div >
   );
 };
